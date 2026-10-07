@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#171b2a">
+  <meta name="description" content="Una pequeña carta guardada para el día que recuerdes nuestra fecha.">
+  <title>Una carta que espero que te guste.</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --night: #171b2a;
+      --night-soft: #202638;
+      --ink: #292a35;
+      --muted: #b9bac7;
+      --rose: #d8a9ad;
+      --paper: #f1e8df;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      overflow-x: hidden;
+      padding: 32px 20px;
+      color: #f2edf0;
+      background:
+        radial-gradient(ellipse at 50% 110%, #4b3d50 0, transparent 48%),
+        radial-gradient(ellipse at 12% 18%, #283148 0, transparent 38%),
+        linear-gradient(145deg, #171b2a, #1d2030 58%, #292334);
+      font-family: Georgia, "Times New Roman", serif;
+    }
+
+    body::before {
+      position: fixed;
+      z-index: -1;
+      content: "";
+      pointer-events: none;
+    }
+
+    body::before {
+      inset: 0;
+      opacity: .2;
+      background-image: radial-gradient(#f2edf0 0.65px, transparent 0.65px);
+      background-size: 31px 31px;
+      mask-image: linear-gradient(to bottom, #000, transparent 82%);
+    }
+
+    main {
+      width: min(100%, 520px);
+      text-align: left;
+    }
+
+    .eyebrow {
+      margin: 0 0 15px;
+      color: var(--rose);
+      font-family: "Segoe UI", sans-serif;
+      font-size: .7rem;
+      font-weight: 600;
+      letter-spacing: .24em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2rem, 7vw, 3.15rem);
+      font-weight: 400;
+      letter-spacing: -.04em;
+    }
+
+    .intro {
+      margin: 14px 0 34px;
+      color: var(--muted);
+      font-size: 1.02rem;
+      line-height: 1.7;
+    }
+
+    .lock-card {
+      padding: clamp(25px, 7vw, 40px);
+      border: 1px solid #ffffff19;
+      border-radius: 4px;
+      background: linear-gradient(145deg, #ffffff0b, #ffffff04);
+      box-shadow: 0 24px 80px #090b1466;
+      backdrop-filter: blur(8px);
+      text-align: center;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 18px;
+      font-size: 1.25rem;
+    }
+
+    .answer-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    input {
+      min-width: 0;
+      flex: 1;
+      padding: 14px 15px;
+      border: 1px solid #ffffff35;
+      border-radius: 3px;
+      outline: none;
+      color: #fff;
+      background: #11152270;
+      font: 1rem "Segoe UI", sans-serif;
+      letter-spacing: .08em;
+      transition: border-color .2s, box-shadow .2s;
+    }
+
+    input::placeholder { color: #a7a8b4a6; }
+
+    input:focus {
+      border-color: var(--rose);
+      box-shadow: 0 0 0 3px #d8a9ad20;
+    }
+
+    button {
+      padding: 0 19px;
+      border: 1px solid var(--rose);
+      border-radius: 3px;
+      color: #211d2a;
+      background: var(--rose);
+      cursor: pointer;
+      font: 600 .88rem "Segoe UI", sans-serif;
+      transition: background .2s, transform .2s;
+    }
+
+    button:hover { background: #e5bdc0; transform: translateY(-1px); }
+    button:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+
+    .hint {
+      margin: 15px 0 0;
+      color: #b9bac7a8;
+      font: .8rem "Segoe UI", sans-serif;
+      letter-spacing: .04em;
+    }
+
+    .error {
+      min-height: 1.3em;
+      margin: 12px 0 0;
+      color: #efb2b5;
+      font: .88rem "Segoe UI", sans-serif;
+    }
+
+    .letter-wrap {
+      display: none;
+      width: min(100%, 590px);
+      margin: 0 auto;
+      text-align: left;
+      animation: arrive .8s ease both;
+    }
+
+    .letter-wrap.visible { display: block; }
+
+    .letter {
+      position: relative;
+      padding: clamp(28px, 7vw, 54px);
+      color: var(--ink);
+      background: var(--paper);
+      box-shadow: 0 24px 70px #090b1480, 0 2px 4px #090b1450;
+      transform: rotate(-.5deg);
+    }
+
+    .letter-content {
+      position: relative;
+      padding-left: 12px;
+      font-size: 1.03rem;
+      line-height: 2;
+    }
+
+    .letter h2 {
+      margin: 0 0 18px;
+      font-size: 1.6rem;
+      font-weight: 400;
+    }
+
+    .letter p { margin: 0 0 15px; }
+
+    .letter-content > p:not(.signature) {
+      text-align: justify;
+    }
+
+    .signature {
+      margin-top: 20px !important;
+      color: #765e70;
+      font-style: italic;
+    }
+
+    .back-button {
+      display: block;
+      margin: 29px auto 0;
+      padding: 10px 16px;
+      border-color: #ffffff54;
+      color: #eee9ed;
+      background: transparent;
+      font-weight: 400;
+    }
+
+    .back-button:hover { color: var(--night); background: #f2edf0; }
+
+    .footer-note {
+      margin: 35px 0 0;
+      color: #b9bac77d;
+      font: .73rem "Segoe UI", sans-serif;
+      letter-spacing: .08em;
+    }
+
+    [hidden] { display: none !important; }
+
+    @keyframes arrive {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 420px) {
+      .answer-row { flex-direction: column; }
+      .answer-row button { min-height: 46px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section id="gate" aria-labelledby="page-title">
+      <p class="eyebrow">Para cuando quieras volver</p>
+      <h1 id="page-title">Hay algo que te escribi con mi corazoncito de melon.</h1>
+      <p class="intro">De tu esposo.<br>tu eres mi tesoro.</p>
+
+      <form class="lock-card" id="unlock-form">
+        <label for="answer">¿Cuándo nos hicimos novios?</label>
+        <div class="answer-row">
+          <input
+            id="answer"
+            name="answer"
+            type="text"
+            placeholder="DD/MM/AA"
+            autocomplete="off"
+            inputmode="numeric"
+            aria-describedby="date-hint error-message"
+            required
+          >
+          <button type="submit">Abrir carta</button>
+        </div>
+        <p class="hint" id="date-hint">Escribe la fecha como día/mes/año.</p>
+        <p class="error" id="error-message" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <section class="letter-wrap" id="letter" aria-labelledby="letter-title" tabindex="-1">
+      <article class="letter">
+        <div class="letter-content">
+          <h2 id="letter-title">Querida Majito,</h2>
+          <p>
+            Mira Majito te extraño mucho, no sé si leas esto, pero quiero decirte que yo siempre estaré para ti, tal vez nos hayamos tomado un tiempo pero yo siempre te amaré, tengo una cartita que te daré el día que nos volvamos a ver, en si dos una de ellas fue antes de todo esto y otra fue algo similar a lo que te estoy escribiendo. 
+          </p>
+          <p>
+            Eres la única mujer que amaré ya, cambiaré por ti y reconozco mis errores se que te lastimaron, un perdón no es suficiente pero te prometo que puedo cambiar para nuestro bien, marijo eres la mujer que más he soñado, eres la más bella, y sobre todo la persona que yo siempre amaré.
+          </p>
+          <p>
+            Ojalá algún día regresemos y ese día espero que sea cerca, cambiaré por ti para que un día ese esposo reconozca que tal vez no haya sido el mejor pero si el que más te amo mi amada Marijo, te ama mucho, Matias André Muñoz Gallardo.
+          </p>
+          <p class="signature">Te amare por<br>siempre.</p>
+        </div>
+      </article>
+      <article class="letter" id="letter-august" aria-labelledby="august-title" hidden>
+        <div class="letter-content">
+          <h2 id="august-title">Querida Majito, te preguntabas muchas veces esto,</h2>
+          <p>
+            ¿Porque te amo? 
+          </p>
+          <p>
+            Eres una persona que yo siempre he querido seguir, eres una gran inspiración, amo como sonríes y me doy cuenta que eres esa persona que jamás me soltara, amo como eres tú, cuando te caes y siempre te levantes aunque te duela, lo inteligente que eres y sé que es difícil serlo, y lo importante que eres para muchas vidas, y para mí fuiste la persona a la que yo me di cuenta que debo cuidar, amo cuidarte y siempre te nervioseas por cositas mínima y sobre todo por mi.
+          </p>
+          <p>
+            Te amo Majo te amo mucho.
+          </p>
+          <p class="signature">siempre sere tu niño tikito.<br>-Matias</p>
+        </div>
+      </article>
+      <article class="letter" id="letter-september" aria-labelledby="september-title" hidden>
+        <div class="letter-content">
+          <h2 id="september-title">Para ti,</h2>
+          <p>
+            Por último mi vida quiero de verdad regresar contigo prometo que si hay alguna cosa que te molesta la cambiaré, tú dime porque tanto tú y yo sabemos que no nos gusta estar así.
+          </p>
+          <p>
+            Si pudiera guardar algo de aquellos momentos, guardaría la calma de
+            saber que estabas ahí y la alegría sencilla de tenerte cerca. Son
+            recuerdos pequeños, pero todavía encuentran la forma de acompañarme.
+          </p>
+          <p>
+            Y si lees esto me alegra saber que si encontraste el tesoro bueno entre comillas porque el tesoro eres tú, Eres lo más preciado de toda mi vida yo te lo he dicho mucho pero eres mi One piece y asi como luffy le gusta comer a mi me gusta estar contigo aunque sea por un ratito. 
+          </p>
+          <p class="signature">Ojala estemos juntos de nuevo.<br>-tu esposo Matias.</p>
+        </div>
+      </article>
+      <button class="back-button" id="back-button" type="button">Volver al recuerdo</button>
+    </section>
+
+    <p class="footer-note" id="footer-note">Una fecha que sera siempre recordada por nosotros.</p>
+  </main>
+
+  <script>
+    const form = document.querySelector("#unlock-form");
+    const answer = document.querySelector("#answer");
+    const errorMessage = document.querySelector("#error-message");
+    const gate = document.querySelector("#gate");
+    const letter = document.querySelector("#letter");
+    const mayLetter = document.querySelector("#letter .letter");
+    const augustLetter = document.querySelector("#letter-august");
+    const septemberLetter = document.querySelector("#letter-september");
+    const footerNote = document.querySelector("#footer-note");
+    const backButton = document.querySelector("#back-button");
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const enteredDate = answer.value.trim();
+      if (enteredDate !== "31/05/26" && enteredDate !== "29/08/11" && enteredDate !== "08/09/11") {
+        errorMessage.textContent = "Esa fecha no es. Inténtalo una vez más.";
+        answer.setAttribute("aria-invalid", "true");
+        answer.focus();
+        return;
+      }
+
+      errorMessage.textContent = "";
+      answer.removeAttribute("aria-invalid");
+      mayLetter.hidden = enteredDate !== "31/05/26";
+      augustLetter.hidden = enteredDate !== "29/08/11";
+      septemberLetter.hidden = enteredDate !== "08/09/11";
+      gate.hidden = true;
+      footerNote.hidden = true;
+      letter.classList.add("visible");
+      letter.focus();
+    });
+
+    answer.addEventListener("input", () => {
+      errorMessage.textContent = "";
+      answer.removeAttribute("aria-invalid");
+    });
+
+    backButton.addEventListener("click", () => {
+      letter.classList.remove("visible");
+      gate.hidden = false;
+      footerNote.hidden = false;
+      answer.value = "";
+      answer.focus();
+    });
+  </script>
+</body>
+</html>
